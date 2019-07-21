@@ -1,0 +1,4 @@
+## Runtime configuration for the guanoctl application.
+##
+core:
+  logging: WARN
