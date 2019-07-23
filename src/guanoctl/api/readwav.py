@@ -3,17 +3,18 @@
 """
 import csv
 
+from datetime import  datetime
 from uuid import uuid4
 from pathlib import Path
 from guano import GuanoFile
 from ..core.logger import logger
 
 
-def main(wav_dir, metadata_file) -> str:
+def main(wav_dir, output_file) -> str:
     """ Execute the command.
 
     :param wav_dir: directory containing one more more wav files
-    :param metadata_file: full path to GUANO metadata output file
+    :param output_file: full path to GUANO metadata output file
     """
     logger.debug("executing readwav command")
 
@@ -44,7 +45,10 @@ def main(wav_dir, metadata_file) -> str:
     combined_metadata = {}
     combined_metadata.update(guano_strict)
 
-    with open(metadata_file, 'w', newline='') as output_file:
+    if output_file is None:
+        output_file = str(Path(wav_dir[0]).joinpath(datetime.now().strftime('%Y%m%d-%H%M%S'))) + '.csv'
+
+    with open(output_file, 'w', newline='') as metadata_file:
         for file in Path(wav_dir[0]).glob('*.[Ww][Aa][Vv]'):
             try:
                 gf = GuanoFile(Path(wav_dir[0]).joinpath(str(file.name)))
@@ -56,10 +60,10 @@ def main(wav_dir, metadata_file) -> str:
                 combined_metadata.update({'ABCD|uuid': uuid4()})
                 combined_metadata.update({'Original Filename': file.name})
 
-                if output_file.tell() == 0:
-                    writer = csv.DictWriter(output_file, dialect=csv.excel, fieldnames=combined_metadata.keys())
+                if metadata_file.tell() == 0:
+                    writer = csv.DictWriter(metadata_file, dialect=csv.excel, fieldnames=combined_metadata.keys())
                     writer.writeheader()
 
                 writer.writerow(combined_metadata)
 
-    return 'Output file written to: ' + output_file.name
+    return 'Output file written to: ' + metadata_file.name

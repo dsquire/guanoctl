@@ -1,7 +1,7 @@
 """ Implementation of the command line interface.
 
 """
-import os
+# import os
 from argparse import ArgumentParser
 from inspect import getfullargspec
 
@@ -90,7 +90,7 @@ def _readwav(subparsers, common):
     """
     parser = subparsers.add_parser('readwav', parents=[common])
     parser.add_argument('wav_dir', nargs=1, help='Full path of a directory containing one or more sound files.')
-    parser.add_argument('-o', '--metadata_file', type=str, default=os.path.join(os.getcwd(), 'guano_metadata.csv'))
+    parser.add_argument('-o', '--output_file', type=str)  # , default=os.path.join(os.getcwd(), 'guano_metadata.csv')
     parser.set_defaults(command=readwav)
     return
 
