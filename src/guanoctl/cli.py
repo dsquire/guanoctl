@@ -8,6 +8,7 @@ from inspect import getfullargspec
 from . import __version__
 from .api import hello
 from .api import readwav
+from .api import writewav
 from .core.config import config
 from .core.logger import logger
 
@@ -63,6 +64,7 @@ def _args(argv):
     subparsers = parser.add_subparsers(title="subcommands")
     _hello(subparsers, common)
     _readwav(subparsers, common)
+    _writewav(subparsers, common)
     args = parser.parse_args(argv)
     if not args.config:
         # Don't specify this as an argument default or else it will always be
@@ -92,6 +94,17 @@ def _readwav(subparsers, common):
     parser.add_argument('wav_dir', nargs=1, help='Full path of a directory containing one or more sound files.')
     parser.add_argument('-o', '--output_file', type=str)  # , default=os.path.join(os.getcwd(), 'guano_metadata.csv')
     parser.set_defaults(command=readwav)
+    return
+
+
+def _writewav(subparsers, common):
+    """ CLI adaptor for the api.writewav command.
+
+    :param subparsers: subcommand parsers
+    :param common: parser for common subcommand arguments
+    """
+    parser = subparsers.add_parser('writewav', parents=[common])
+    parser.set_defaults(command=writewav)
     return
 
 
