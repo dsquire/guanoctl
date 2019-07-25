@@ -3,7 +3,7 @@
 """
 import csv
 
-from datetime import  datetime
+from datetime import datetime
 from uuid import uuid4
 from pathlib import Path
 from guano import GuanoFile
@@ -57,7 +57,10 @@ def main(wav_dir, output_file) -> str:
             else:
                 guano_metadata = {key: value for key, value in gf.items()}
                 combined_metadata.update(guano_metadata)
-                combined_metadata.update({'ABCD|uuid': uuid4()})
+
+                if not 'ABCD|uuid' in guano_metadata.keys():
+                    combined_metadata.update({'ABCD|uuid': uuid4()})
+
                 combined_metadata.update({'Original Filename': file.name})
 
                 if metadata_file.tell() == 0:

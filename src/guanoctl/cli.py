@@ -104,6 +104,8 @@ def _writewav(subparsers, common):
     :param common: parser for common subcommand arguments
     """
     parser = subparsers.add_parser('writewav', parents=[common])
+    parser.add_argument('wav_dir', nargs=1, help='Full path of a directory containing one or more sound files.')
+    parser.add_argument('-i', '--input_file', type=str)  # , default=os.path.join(os.getcwd(), 'guano_metadata.csv')
     parser.set_defaults(command=writewav)
     return
 
