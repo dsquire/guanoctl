@@ -35,9 +35,36 @@ def main(wav_dir, input_file) -> str:
     for file in Path(wav_dir[0]).glob('*.[Ww][Aa][Vv]'):
         copy(file.as_posix(), backup_dir.as_posix())
 
+    with open(input_file, 'r', newline='') as metadata_file:
+        reader = csv.DictReader(metadata_file)
 
+        for row in reader:
+            gf = GuanoFile(backup_dir.joinpath(row['Original Filename']).as_posix())
 
+            for key, value in row.items():
+                print(key + ' ' + value)
 
+                if key == 'Filter HP':
+                    pass
+                elif key == 'Length':
+                    pass
+                elif key == 'Loc Elevation':
+                    pass
+                elif key == 'Loc Accuracy':
+                    pass
+                elif key == 'Samplerate':
+                    pass
+                elif key == 'TE':
+                    pass
+                elif key == 'Loc Position':
+                    pass
+                elif key == 'Timestamp':
+                    pass
+                elif key == 'Note':
+                    pass
+                else:
+                    gf[key] = value
 
+            gf.write(make_backup=False)
 
     return "Hello"  # TODO: use f-string for Python 3.6+
