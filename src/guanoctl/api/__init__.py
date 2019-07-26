@@ -3,6 +3,7 @@
 """
 from .hello import main as hello
 from .readwav import main as readwav
+from .writewav import main as writewav
 
 
-__all__ = "hello", "readwav"
+__all__ = "hello", "readwav", "writewav"

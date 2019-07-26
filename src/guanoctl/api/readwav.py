@@ -58,7 +58,7 @@ def main(wav_dir, output_file) -> str:
                 guano_metadata = {key: value for key, value in gf.items()}
                 combined_metadata.update(guano_metadata)
 
-                if not 'ABCD|uuid' in guano_metadata.keys():
+                if 'ABCD|uuid' not in guano_metadata.keys():
                     combined_metadata.update({'ABCD|uuid': uuid4()})
 
                 combined_metadata.update({'Original Filename': file.name})

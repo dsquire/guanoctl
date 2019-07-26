@@ -116,7 +116,7 @@ if __name__ == "__main__":
     try:
         status = main()
     except Exception:  # 'Exception' added by DS
-        logger.critical("shutting down due to fatal error")
+        logger.critical("Shutting down due to fatal error!")
         raise  # print stack trace
     else:
         raise SystemExit(status)
