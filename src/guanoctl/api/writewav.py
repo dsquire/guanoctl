@@ -44,8 +44,8 @@ def main(wav_dir, input_file) -> str:
             for key, value in row.items():
                 print(key + ' ' + value)
 
-                if key == 'Filter HP':
-                    pass
+                if key == 'Filter HP' and value is not '':
+                    gf[key] = float(value)
                 elif key == 'Length':
                     pass
                 elif key == 'Loc Elevation':
@@ -65,6 +65,6 @@ def main(wav_dir, input_file) -> str:
                 else:
                     gf[key] = value
 
-            gf.write(make_backup=False)
+            gf.write()
 
     return "Hello"  # TODO: use f-string for Python 3.6+
