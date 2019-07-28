@@ -42,25 +42,31 @@ def main(wav_dir, input_file) -> str:
             gf = GuanoFile(backup_dir.joinpath(row['Original Filename']).as_posix())
 
             for key, value in row.items():
-                print(key + ' ' + value)
 
-                if key == 'Filter HP' and value is not '':
-                    gf[key] = float(value)
+                if key == 'Filter HP':
+                    # gf[key] = float(value)
+                    pass
                 elif key == 'Length':
+                    # gf[key] = float(value)
                     pass
                 elif key == 'Loc Elevation':
+                    # gf[key] = float(value)
                     pass
                 elif key == 'Loc Accuracy':
+                    # gf[key] = int(value)
                     pass
                 elif key == 'Samplerate':
+                    # gf[key] = int(value)
                     pass
                 elif key == 'TE':
+                    # gf[key] = int(value)
                     pass
                 elif key == 'Loc Position':
                     pass
                 elif key == 'Timestamp':
                     pass
                 elif key == 'Note':
+                    # gf[key] = value.replace('\\n', '\n')
                     pass
                 else:
                     gf[key] = value
