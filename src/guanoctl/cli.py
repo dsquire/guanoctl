@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 from inspect import getfullargspec
 
 from . import __version__
-from .api import hello
+# from .api import hello
 from .api import readwav
 from .api import writewav
 from .core.config import config
@@ -62,7 +62,7 @@ def _args(argv):
     # common.add_argument('wav_dir')
     # common.add_argument("--name", "-n", default="World", help="greeting name")
     subparsers = parser.add_subparsers(title="subcommands")
-    _hello(subparsers, common)
+    # _hello(subparsers, common)
     _readwav(subparsers, common)
     _writewav(subparsers, common)
     args = parser.parse_args(argv)
@@ -73,15 +73,15 @@ def _args(argv):
     return args
 
 
-def _hello(subparsers, common):
-    """ CLI adaptor for the api.hello command.
-
-    :param subparsers: subcommand parsers
-    :param common: parser for common subcommand arguments
-    """
-    parser = subparsers.add_parser("hello", parents=[common])
-    parser.set_defaults(command=hello)
-    return
+# def _hello(subparsers, common):
+#     """ CLI adaptor for the api.hello command.
+#
+#     :param subparsers: subcommand parsers
+#     :param common: parser for common subcommand arguments
+#     """
+#     parser = subparsers.add_parser("hello", parents=[common])
+#     parser.set_defaults(command=hello)
+#     return
 
 
 def _readwav(subparsers, common):
