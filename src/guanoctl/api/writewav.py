@@ -4,7 +4,7 @@
 import csv
 import sys
 
-from datetime import datetime
+# from datetime import datetime
 from uuid import uuid4
 from shutil import copy
 from pathlib import Path
@@ -40,10 +40,14 @@ def main(wav_dir, input_file) -> str:
 
         for row in reader:
             gf = GuanoFile(backup_dir.joinpath(row['Original Filename']).as_posix())
-            gf.register('ABCD', ['uuid'], coerce_abcd)
+            # gf.register('ABCD', 'uuid', coerce_abcd)
+            # gf.register('ABCD', 'test', coerce_abcd)
+
+            # gf['ABCD|uuid'] = str(uuid4())
+            # gf['Length'] = float(15.9)
 
             for key, value in row.items():
-                gf[key] = value
+                gf[key] = set_value(key, value)
 
             try:
                 gf.write()
@@ -63,3 +67,25 @@ def coerce_abcd(value):
         logger.error(value + ' is not a string')
 
     return value
+
+def set_value(key, value):
+    if key in ('Filter HP', 'Length', 'Loc Elevation') and value:
+        try:
+            return float(value)
+        except ValueError:
+            logger.error(value + ' is not a float!')
+    elif key in ('Loc Accuracy', 'Samplerate', 'TE') and value:
+        try:
+            return int(value)
+        except ValueError:
+            logger.error(value + ' is not an int!')
+    elif key == 'Loc Position' and value:
+        value_stripped = value.strip('()')
+        value_list = value_stripped.split(',')
+        try:
+            blah = tuple(float(i) for i in value_list)
+            return blah # tuple(float(i) for i in value_list)
+        except ValueError:
+            logger.error(value + ' is not a float!')
+    else:
+        return value.replace('\\n', '\n')
