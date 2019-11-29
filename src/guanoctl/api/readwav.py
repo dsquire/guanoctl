@@ -4,10 +4,7 @@
 import csv
 from datetime import datetime
 from pathlib import Path
-# from uuid import uuid4
-
 from guano import GuanoFile
-
 from ..core.logger import logger
 
 
