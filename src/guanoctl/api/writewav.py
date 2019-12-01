@@ -8,7 +8,7 @@ import sys
 from uuid import uuid4
 from shutil import copy
 from pathlib import Path
-from guano import GuanoFile
+from guano import GuanoFile, parse_timestamp
 from ..core.logger import logger
 
 
@@ -45,9 +45,15 @@ def main(wav_dir, input_file) -> str:
 
             # gf['ABCD|uuid'] = str(uuid4())
             # gf['Length'] = float(15.9)
+            # gf['WA|Kaleidoscope|Version'] = '5.1.9h'
 
             for key, value in row.items():
+                print(key + ' ' + value)
                 gf[key] = set_value(key, value)
+            #     if key == 'WA|Kaleidoscope|Version':
+            #         print(type(value))
+            #     gf[key] = set_value(key, value)
+                #  gf[key] = value
 
             try:
                 gf.write()
@@ -68,6 +74,7 @@ def coerce_abcd(value):
 
     return value
 
+
 def set_value(key, value):
     if key in ('Filter HP', 'Length', 'Loc Elevation') and value:
         try:
@@ -84,8 +91,13 @@ def set_value(key, value):
         value_list = value_stripped.split(',')
         try:
             blah = tuple(float(i) for i in value_list)
-            return blah # tuple(float(i) for i in value_list)
+            return blah  # tuple(float(i) for i in value_list)
         except ValueError:
             logger.error(value + ' is not a float!')
+    elif key == 'Timestamp':
+        try:
+            return parse_timestamp(value)
+        except ValueError:
+            logger.error(type(value))
     else:
-        return value.replace('\\n', '\n')
+        return value
