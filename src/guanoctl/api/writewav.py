@@ -20,47 +20,44 @@ def main(wav_dir, input_file) -> str:
     """
     logger.debug("executing hello command")
 
-    try:
-        backup_dir = Path(wav_dir[0]).joinpath('guanoctl_out')
-    except FileNotFoundError:
-        logger.error('The wav directory does not exist!')
-        sys.exit()
+    # try:
+    #     backup_dir = Path(wav_dir[0]).joinpath('guanoctl_out')
+    # except FileNotFoundError:
+    #     logger.error('The wav directory does not exist!')
+    #     sys.exit()
+    #
+    # try:
+    #     backup_dir.mkdir()
+    # except FileExistsError:
+    #     logger.error('The working directory already exists.')
+    #     sys.exit()
+    #
+    # for file in Path(wav_dir[0]).glob('*.[Ww][Aa][Vv]'):
+    #     copy(file.as_posix(), backup_dir.as_posix())
 
-    try:
-        backup_dir.mkdir()
-    except FileExistsError:
-        logger.error('The working directory already exists.')
-        sys.exit()
-
-    for file in Path(wav_dir[0]).glob('*.[Ww][Aa][Vv]'):
-        copy(file.as_posix(), backup_dir.as_posix())
-
-    with open(input_file, 'r', newline='') as metadata_file:
+    with open(input_file, 'r', newline = '') as metadata_file:
         reader = csv.DictReader(metadata_file)
 
         for row in reader:
-            gf = GuanoFile(backup_dir.joinpath(row['Original Filename']).as_posix())
-            # gf.register('ABCD', 'uuid', coerce_abcd)
-            # gf.register('ABCD', 'test', coerce_abcd)
-
-            # gf['ABCD|uuid'] = str(uuid4())
-            # gf['Length'] = float(15.9)
-            # gf['WA|Kaleidoscope|Version'] = '5.1.9h'
+            gf = GuanoFile(Path(wav_dir[0]).joinpath(row['Original Filename']).as_posix())
+            row_list = []
 
             for key, value in row.items():
-                print(key + ' ' + value)
-                gf[key] = set_value(key, value)
-            #     if key == 'WA|Kaleidoscope|Version':
-            #         print(type(value))
-            #     gf[key] = set_value(key, value)
-                #  gf[key] = value
+                row_list.append(key + ':' + value)
 
             try:
-                gf.write()
+                gf.from_string('\\'.join(row_list))
             except ValueError:
                 logger.error('Column: ' + key + ' Value: ' + value + ' is wrong data type!')
             except AttributeError:
                 logger.error('Column: ' + key + ' Value: ' + value + ' is wrong data type!')
+
+            try:
+                gf.write()
+            except ValueError:
+                logger.error('Unable to write metadata (Value)!')
+            except AttributeError:
+                logger.error(('Unable to write metadata (Attribute)!'))
 
     return "Hello"  # TODO: use f-string for Python 3.6+
 
