@@ -1,6 +1,3 @@
-## Python requirements for using the guanoctl application.
-##
-##   python -m pip install --requirement=requirements.txt
-##
-PyYAML>=3.11
-guano>=1.0.12
+-i https://pypi.org/simple/
+guano==1.0.12
+pyyaml==5.4
